@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare Hospital - Appointments</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f0f8ff;
+        }
+
+        header {
+            background-color: #0066cc;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #004080;
+            padding: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .appointment-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #0066cc;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .patient-list {
+            margin-top: 2rem;
+        }
+
+        .patient-card {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ankit MediCare Hospital</h1>
+    </header>
+    
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#appointments">Appointments</a>
+        <a href="#patients">Patients</a>
+    </nav>
+
+    <div class="container">
+        <section id="appointments">
+            <h2>Book Appointment</h2>
+            <form class="appointment-form" id="appointmentForm">
+                <div class="form-group">
+                    <label for="patientName">Full Name:</label>
+                    <input type="text" id="patientName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="patientEmail">Email:</label>
+                    <input type="email" id="patientEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="patientPhone">Phone:</label>
+                    <input type="tel" id="patientPhone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="doctor">Select Doctor:</label>
+                    <select id="doctor" required>
+                        <option value="">Choose Doctor</option>
+                        <option value="dr_sharma">Dr. Rohan Sharma (Cardiologist)</option>
+                        <option value="dr_patel">Dr. Priya Patel (Pediatrician)</option>
+                        <option value="dr_kumar">Dr. Amit Kumar (Orthopedist)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="appointmentDate">Date:</label>
+                    <input type="date" id="appointmentDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="appointmentTime">Time:</label>
+                    <input type="time" id="appointmentTime" required>
+                </div>
+
+                <button type="submit">Book Appointment</button>
+            </form>
+        </section>
+
+        <section class="patient-list" id="patients">
+            <h2>Patient Records</h2>
+            <div id="patientRecords"></div>
+        </section>
+    </div>
+
+    <script>
+        const patients = [];
+        let patientId = 1;
+
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const patientData = {
+                id: patientId++,
+                name: document.getElementById('patientName').value,
+                email: document.getElementById('patientEmail').value,
+                phone: document.getElementById('patientPhone').value,
+                doctor: document.getElementById('doctor').value,
+                date: document.getElementById('appointmentDate').value,
+                time: document.getElementById('appointmentTime').value,
+                timestamp: new Date().toLocaleString()
+            };
+
+            patients.push(patientData);
+            updatePatientRecords();
+            this.reset();
+        });
+
+        function updatePatientRecords() {
+            const recordsDiv = document.getElementById('patientRecords');
+            recordsDiv.innerHTML = '';
+
+            patients.forEach(patient => {
+                const patientCard = document.createElement('div');
+                patientCard.className = 'patient-card';
+                patientCard.innerHTML = `
+                    <h3>${patient.name} (ID: ${patient.id})</h3>
+                    <p>Email: ${patient.email}</p>
+                    <p>Phone: ${patient.phone}</p>
+                    <p>Doctor: ${patient.doctor}</p>
+                    <p>Appointment: ${patient.date} at ${patient.time}</p>
+                    <p>Booked on: ${patient.timestamp}</p>
+                `;
+                recordsDiv.appendChild(patientCard);
+            });
+        }
+    </script>
+</body>
+</html>
